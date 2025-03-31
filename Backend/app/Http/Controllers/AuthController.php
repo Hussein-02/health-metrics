@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
@@ -37,5 +38,16 @@ class AuthController extends Controller
         }
 
         return response()->json(['success' => 'true', 'token' => $token]);
+    }
+
+    public function logout()
+    {
+        JWTAuth::invalidate(JWTAuth::getToken());
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    public function me()
+    {
+        return response()->json(Auth::user());
     }
 }
