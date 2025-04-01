@@ -6,21 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('health_data', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->date('date');
+            $table->integer('steps');
+            $table->decimal('distance_km', 8, 2);
+            $table->integer('active_minutes');
             $table->timestamps();
+
+            // Composite unique key to prevent duplicate entries
+            $table->unique(['user_id', 'date']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('health_data');
     }
