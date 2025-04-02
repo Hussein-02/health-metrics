@@ -3,7 +3,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -12,7 +15,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "league/csv": "^9.23",
-        "league/oauth2-server": "^9.2",
+        "league/oauth2-server": "8.5.5",
+        "laravel/passport": "^12.0",
         "php-open-source-saver/jwt-auth": "^2.8",
         "spatie/laravel-activitylog": "^4.10"
     },
