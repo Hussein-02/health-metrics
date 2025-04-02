@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\HealthDataUpdated;
+use App\Http\Controllers\PredictionController;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -21,6 +22,10 @@ class GeneratePrediction
      */
     public function handle(HealthDataUpdated $event): void
     {
-        //
+        $request = new \Illuminate\Http\Request();
+
+        $controller = new PredictionController();
+
+        $controller->getPredictions($request);
     }
 }

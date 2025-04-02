@@ -24,25 +24,36 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $token = JWTAuth::fromUser($user);
+        $token = $user->createToken('Personal Access Token')->accessToken;
 
         return response()->json(['success' => 'true', 'user' => $user, 'token' => $token], 201);
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-        if (!$token = JWTAuth::attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        //authentication check
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            return response()->json([
+                'message' => 'Invalid credentials'
+            ], 401);
         }
 
-        return response()->json(['success' => 'true', 'token' => $token]);
+        //create token
+        $token = $user->createToken('AuthToken')->accessToken;
+
+        return response()->json(['user' => $user, 'access_token' => $token], 201);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        JWTAuth::invalidate(JWTAuth::getToken());
+        $request->user()->token()->revoke();
         return response()->json(['message' => 'Successfully logged out']);
     }
 

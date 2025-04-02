@@ -59,6 +59,8 @@ class HealthDataController extends Controller
                 $processed++;
             }
 
+            event(new HealthDataUpdated($user));
+
             return response()->json([
                 'success' => true,
                 'message' => "$processed records processed",
